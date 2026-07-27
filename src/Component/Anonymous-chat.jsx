@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { getSocket } from "../Socket"
 
 const Anonymouschat = () => {
+  const socket = getSocket();
   const [message, setMessage] = useState("");
   const [typing, setTyping] = useState(false);
   const [connected, setConnected] = useState(true);

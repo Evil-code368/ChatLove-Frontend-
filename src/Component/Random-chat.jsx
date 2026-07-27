@@ -8,6 +8,7 @@ const Randomchat = () => {
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
   const [isAdult, setIsAdult] = useState(false);
+  const socket = getSocket();
 
   const navigate = useNavigate();
 
