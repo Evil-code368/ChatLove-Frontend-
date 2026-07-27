@@ -1,10 +1,12 @@
 import { io } from "socket.io-client";
 
+
+
 let socket = null;
 export const getSocket = () => {
   if (!socket) {
     socket =
-    io(API_URL,{
+    io(import.meta.env.API_URL,{
       autoConnect: false,
       reconnection: true,
       reconnectionDelay:1000,
