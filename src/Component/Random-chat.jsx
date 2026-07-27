@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getSocket } from "../Socket";
+import { socket } from "../Socket";
 
 const Randomchat = () => {
   const [showModal, setShowModal] = useState(false);
@@ -8,7 +8,6 @@ const Randomchat = () => {
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
   const [isAdult, setIsAdult] = useState(false);
-  const socket = getSocket();
 
   const navigate = useNavigate();
 
