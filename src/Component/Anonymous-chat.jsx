@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { socket } from "../Socket";
+import { getSocket } from "../Socket"
 
 const Anonymouschat = () => {
   const [message, setMessage] = useState("");

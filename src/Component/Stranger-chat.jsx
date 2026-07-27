@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import previewImage from "../assets/image.jpg";
-
+import previewImage from "../assets/image.webp";
 const StrangerChat = () => {
   const [showHowItWorks, setShowHowItWorks] = useState(false);
   const howItWorksRef = useRef(null);
@@ -137,7 +136,7 @@ const StrangerChat = () => {
             <div className="grid gap-6 md:grid-cols-3">
               <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-purple-500/15 to-slate-800 p-7 shadow-lg shadow-purple-900/20">
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-purple-500/20 text-xl font-bold text-purple-200">
-                  1
+                  
                 </div>
                 <h3 className="mb-2 text-xl font-semibold">Join</h3>
                 <p className="text-gray-300">Click Start Chatting and enter your name and age.</p>
@@ -145,7 +144,7 @@ const StrangerChat = () => {
 
               <div className="rounded-3xl border border-cyan-400/20 bg-gradient-to-br from-cyan-500/15 to-slate-800 p-7 shadow-lg shadow-cyan-900/20">
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-500/20 text-xl font-bold text-cyan-200">
-                  2
+                  
                 </div>
                 <h3 className="mb-2 text-xl font-semibold">Connect</h3>
                 <p className="text-gray-300">We match you with another person quickly and safely.</p>
@@ -153,7 +152,7 @@ const StrangerChat = () => {
 
               <div className="rounded-3xl border border-emerald-400/20 bg-gradient-to-br from-emerald-500/15 to-slate-800 p-7 shadow-lg shadow-emerald-900/20">
                 <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/20 text-xl font-bold text-emerald-200">
-                  3
+                  
                 </div>
                 <h3 className="mb-2 text-xl font-semibold">Chat</h3>
                 <p className="text-gray-300">Start a conversation and enjoy meeting new people instantly.</p>

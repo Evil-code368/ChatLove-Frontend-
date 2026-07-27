@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { socket } from "../Socket";
+import { getSocket } from "../Socket";
 
 const Randomchat = () => {
   const [showModal, setShowModal] = useState(false);

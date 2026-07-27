@@ -1,8 +1,16 @@
 import { io } from "socket.io-client";
 
-export const socket = io("https://api.chatlove.pro", {
-  reconnection: true,
-  reconnectionDelay: 1000,
-  reconnectionDelayMax: 5000,
-  reconnectionAttempts: 5,
-});
+let socket = null;
+export const getSocket = () => {
+  if (!socket) {
+    socket =
+    io(API_URL,{
+      autoConnect: false,
+      reconnection: true,
+      reconnectionDelay:1000,
+      reconnectionDelayMax:5000,
+      reconnectionAttempts:5,
+    });
+  }
+  return socket;
+};
