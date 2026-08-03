@@ -1,4 +1,3 @@
 User-agents: *
 Allow: /
-Sitemap:
-https://www.chatlove.pro/robots.txt
+Sitemap: https://www.chatlove.pro/robots.txt
