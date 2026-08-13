@@ -51,7 +51,7 @@ const StrangerChat = () => {
             <span className="mb-6 inline-block rounded-full border border-purple-400/30 bg-purple-500/15 px-4 py-2 text-sm font-medium text-purple-200">
               🌎 Connect with  random people worldwide
             </span>
-
+            <link rel="canonical" href="https://www.chatlove.pro/stranger-chat"></link>
             <h1 className="mb-6 text-5xl font-black leading-tight sm:text-6xl lg:text-7xl">
               Meet New
               <span className="block text-purple-300">Strangers Instantly</span>

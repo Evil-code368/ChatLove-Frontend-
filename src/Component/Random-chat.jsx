@@ -51,6 +51,7 @@ const Randomchat = () => {
 
       {/* Hero */}
       <div className="max-w-7xl mx-auto px-6 py-24 text-center">
+      <link rel="canonical" href="https://www.chatlove.pro/random-chat"></link>
         <h1 className="text-5xl md:text-7xl font-bold mb-6">
           Meet Random People
         </h1>
