@@ -197,7 +197,7 @@ const Anonymouschat = () => {
       <div className="bg-slate-800 p-4 flex justify-between items-center shadow">
 
         <div>
-          <link rel="canonical" href="https://www.chatlove.pro/random-chat/anonymous-chat"></link>
+          <link rel="canonical" href="https://www.chatlove.pro/anonymous-chat"></link>
           <h1 className="text-xl font-bold">
             Anonymous Chat
           </h1>
