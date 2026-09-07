@@ -120,6 +120,14 @@ const Games = ({ connected, standalone = false }) => {
 		setTicTacToe(null);
 	};
 
+	const replayTicTacToe = () => {
+		socket.emit("ttt:replay", { playerKey });
+	};
+
+	const replayLudo = () => {
+		socket.emit("ludo:replay", { playerKey });
+	};
+
 	const myTicTacToePlayer = ticTacToe?.players.find((player) => player.key === playerKey);
 	const ticTacToeOpponent = ticTacToe?.players.find((player) => player.key !== playerKey);
 	const ticTacToeWinnerName = ticTacToe?.winner === playerKey ? "You win" : `${ticTacToeOpponent?.name || "Your stranger"} wins`;
@@ -168,7 +176,7 @@ const Games = ({ connected, standalone = false }) => {
 						<div className="rounded-3xl border border-cyan-300/20 bg-linear-to-br from-cyan-950 via-slate-900 to-indigo-950 p-4 shadow-2xl sm:p-7">
 							<div className="grid grid-cols-3 gap-3">{ticTacToe.board.map((mark, index) => <button key={index} onClick={() => socket.emit("ttt:move", { playerKey, index })} disabled={Boolean(mark) || ticTacToe.turn !== playerKey || ticTacToe.status !== "playing"} className="aspect-square rounded-2xl border border-white/10 bg-white/10 text-5xl font-black text-cyan-200 transition hover:bg-cyan-300/20 disabled:cursor-not-allowed disabled:opacity-80 sm:text-6xl">{mark}</button>)}</div>
 						</div>
-						<div className="mt-5 text-center"><p className="text-xl font-black">{ticTacToe.status === "finished" ? ticTacToeWinnerName : ticTacToe.status === "draw" ? "It's a draw" : ticTacToe.turn === playerKey ? "Your turn" : `${ticTacToeOpponent?.name || "Your stranger"}'s turn`}</p><p className="mt-2 text-sm text-slate-400">{myTicTacToePlayer?.mark === "X" ? "You are X" : "You are O"}</p></div>
+						<div className="mt-5 text-center"><p className="text-xl font-black">{ticTacToe.status === "finished" ? ticTacToeWinnerName : ticTacToe.status === "draw" ? "It's a draw" : ticTacToe.turn === playerKey ? "Your turn" : `${ticTacToeOpponent?.name || "Your stranger"}'s turn`}</p><p className="mt-2 text-sm text-slate-400">{myTicTacToePlayer?.mark === "X" ? "You are X" : "You are O"}</p>{ticTacToe.status !== "playing" && <button onClick={replayTicTacToe} className="mt-4 rounded-xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-300">Play again</button>}</div>
 					</div>
 				</div>
 			)}
@@ -194,7 +202,7 @@ const Games = ({ connected, standalone = false }) => {
 								{[me, opponent].map((player) => <div key={player.key} className="rounded-2xl bg-black/20 p-3"><p className="mb-2 text-xs font-bold uppercase tracking-widest text-slate-400">{player.color} base</p><div className="grid grid-cols-4 gap-2">{player.tokens.map((progress, tokenIndex) => <button key={tokenIndex} disabled={player.key !== playerKey || !canMove(progress)} onClick={() => move(tokenIndex)} className={`aspect-square rounded-full border-2 text-xs font-black transition ${player.color === "red" ? "border-rose-300 bg-rose-500" : "border-emerald-300 bg-emerald-500"} ${player.key === playerKey && canMove(progress) ? "scale-110 ring-2 ring-amber-300 hover:scale-125" : "opacity-80"}`}>{progress === 58 ? "HOME" : progress === -1 ? "" : progress}</button>)}</div></div>)}
 							</div>
 						</div>
-						<div className="mt-4 flex flex-col items-center gap-3 text-center"><p className="text-lg font-bold">{game.status === "finished" ? `${game.winner === playerKey ? "You win" : "Your stranger wins"}!` : myTurn ? "Your turn" : `${opponent.name}'s turn`}</p><button onClick={roll} disabled={!myTurn || game.dice !== null || rolling || game.status !== "playing"} className={`flex h-20 w-20 items-center justify-center rounded-2xl bg-white text-4xl font-black text-slate-900 shadow-xl ${rolling ? "animate-spin" : ""} disabled:cursor-not-allowed disabled:opacity-40`}>{game.dice || "🎲"}</button><p className="text-xs text-slate-400">{game.dice ? "Choose a highlighted token" : "Roll the dice"}</p></div>
+						<div className="mt-4 flex flex-col items-center gap-3 text-center"><p className="text-lg font-bold">{game.status === "finished" ? `${game.winner === playerKey ? "You win" : "Your stranger wins"}!` : myTurn ? "Your turn" : `${opponent.name}'s turn`}</p><button onClick={roll} disabled={!myTurn || game.dice !== null || rolling || game.status !== "playing"} className={`flex h-20 w-20 items-center justify-center rounded-2xl bg-white text-4xl font-black text-slate-900 shadow-xl ${rolling ? "animate-spin" : ""} disabled:cursor-not-allowed disabled:opacity-40`}>{game.dice || "🎲"}</button><p className="text-xs text-slate-400">{game.dice ? "Choose a highlighted token" : "Roll the dice"}</p>{game.status !== "playing" && <button onClick={replayLudo} className="rounded-xl bg-amber-400 px-5 py-3 font-bold text-slate-950 transition hover:bg-amber-300">Play again</button>}</div>
 					</div>
 				</div>
 			)}
