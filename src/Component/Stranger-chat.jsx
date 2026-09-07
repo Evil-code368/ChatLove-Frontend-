@@ -29,10 +29,19 @@ const StrangerChat = () => {
             <a href="/stranger-chat" className="font-medium text-gray-300 transition hover:text-white">
               Home
             </a>
+            <a href="/confessions" className="font-medium text-gray-300 transition hover:text-white">
+            Confessions
+            </a>
+            <a href="/games" className="font-medium text-gray-300 transition hover:text-white">
+              Games
+            </a>
             <a href="/About" className="font-medium text-gray-300 transition hover:text-white">
               About
             </a>
-            <a href="/Report" className="font-medium text-gray-300 transition hover:text-white">
+            <a href="/faq" className="font-medium text-gray-300 transition hover:text-white">
+              FAQ
+            </a>
+             <a href="/Report" className="font-medium text-gray-300 transition hover:text-white">
               Report
             </a>
           </div>
@@ -53,8 +62,8 @@ const StrangerChat = () => {
             </span>
             <link rel="canonical" href="https://www.chatlove.pro/stranger-chat"></link>
             <h1 className="mb-6 text-5xl font-black leading-tight sm:text-6xl lg:text-7xl">
-              Meet New
-              <span className="block text-purple-300">Strangers Instantly</span>
+              Free Stranger Chat -- Meet
+              <span className="block text-purple-300"> Random People Online Instantly</span>
             </h1>
 
             <p className="mb-8 max-w-xl text-lg leading-8 text-gray-300">
@@ -107,7 +116,7 @@ const StrangerChat = () => {
 
               <div className="mt-6 rounded-2xl border border-emerald-400/20 bg-emerald-500/10 p-4 text-sm text-emerald-100">
                 <p className="font-semibold">Instant matching</p>
-                <p className="mt-1 text-emerald-200">Meet someone new in seconds.</p>
+                <p className="mt-1 text-emerald-200">Meet Random Stranger in seconds.</p>
               </div>
 
               <Link to="/random-chat" className="mt-6 inline-block w-full">
@@ -121,6 +130,8 @@ const StrangerChat = () => {
             <div className="absolute -bottom-8 -left-8 h-28 w-28 rounded-full bg-cyan-400/20 blur-3xl" />
           </div>
         </div>
+        
+  
       </section>
 
       {showHowItWorks && (
@@ -147,7 +158,7 @@ const StrangerChat = () => {
                   
                 </div>
                 <h3 className="mb-2 text-xl font-semibold">Connect</h3>
-                <p className="text-gray-300">We match you with another person quickly and safely.</p>
+                <p className="text-gray-300">We match you with random stranger quickly and safely.</p>
               </div>
 
               <div className="rounded-3xl border border-emerald-400/20 bg-gradient-to-br from-emerald-500/15 to-slate-800 p-7 shadow-lg shadow-emerald-900/20">
@@ -155,7 +166,7 @@ const StrangerChat = () => {
                   
                 </div>
                 <h3 className="mb-2 text-xl font-semibold">Chat</h3>
-                <p className="text-gray-300">Start a conversation and enjoy meeting new people instantly.</p>
+                <p className="text-gray-300">Start a conversation and anonymous conversation safely.</p>
               </div>
             </div>
           </div>
@@ -183,9 +194,15 @@ const StrangerChat = () => {
                     Random Chat
                   </a>
                 </li>
+               
                 <li>
-                  <a href="/About" className="transition hover:text-white">
-                    About
+                  <a href="/confessions" className="transition hover:text-white">
+                    Confessions
+                  </a>
+                </li>
+                <li>
+                  <a href="/games" className="transition hover:text-white">
+                    Games
                   </a>
                 </li>
               </ul>
@@ -204,6 +221,12 @@ const StrangerChat = () => {
                     Contact
                   </a>
                 </li>
+                <li>
+                  <a href="/faq" className="transition hover:text-white">
+                    FAQ
+                  </a>
+                </li>
+                
               </ul>
             </div>
 
@@ -218,6 +241,11 @@ const StrangerChat = () => {
                 <li>
                   <a href="./Termscondition" className="transition hover:text-white">
                     Terms & Condition
+                  </a>
+                </li>
+                 <li>
+                  <a href="/About" className="transition hover:text-white">
+                    About
                   </a>
                 </li>
               </ul>

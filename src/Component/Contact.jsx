@@ -102,7 +102,7 @@ const Contact = () => {
         <div className="mt-12 grid gap-6 sm:grid-cols-2">
           <div className="rounded-lg border border-white/10 bg-slate-900 p-6">
             <p className="text-sm text-gray-400 mb-1">Email</p>
-            <p className="text-white font-semibold">support@chatlove.com</p>
+            <p className="text-white font-semibold">badboyr031@gmail.com</p>
           </div>
 
           <div className="rounded-lg border border-white/10 bg-slate-900 p-6">

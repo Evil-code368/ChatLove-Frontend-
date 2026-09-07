@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
-import { socket } from "../Socket"
+import { useState, useRef, useEffect } from "react";
+import { socket } from "../Socket";
+import Games from "./Games";
 
 const Anonymouschat = () => {
 
@@ -212,6 +213,8 @@ const Anonymouschat = () => {
         </div>
 
         <div className="flex gap-3">
+          <Games connected={connected} />
+
           <button
             onClick={nextStranger}
             className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg"
