@@ -6,7 +6,7 @@ const Anonymouschat = () => {
 
   const [message, setMessage] = useState("");
   const [typing, setTyping] = useState(false);
-  const [connected, setConnected] = useState(true);
+  const [connected, setConnected] = useState(() => Boolean(sessionStorage.getItem("strangerId")));
   const [searching, setSearching] = useState(false);
   const [strangerName, setStrangerName] = useState(() => sessionStorage.getItem("strangerName") || "Stranger");
   const typingTimeoutRef = useRef(null);
@@ -73,6 +73,7 @@ const Anonymouschat = () => {
     socket.on("stranger-left", () => {
       setConnected(false);
       setSearching(false);
+      sessionStorage.removeItem("strangerId");
     });
 
     socket.on("search-again", () => {
@@ -172,6 +173,7 @@ const Anonymouschat = () => {
     if (connected) {
       socket.emit("disconnect-user");
     }
+    sessionStorage.removeItem("strangerId");
     setConnected(false);
     setSearching(false);
   };

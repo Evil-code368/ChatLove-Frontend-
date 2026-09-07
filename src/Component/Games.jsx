@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { socket } from "../Socket";
 
 const getPlayerKey = () => {
-	const existing = sessionStorage.getItem("ludoPlayerKey");
+	const existing = localStorage.getItem("chatlovePlayerKey");
 	if (existing) return existing;
 	const key = `${crypto.randomUUID()}-${Date.now()}`;
-	sessionStorage.setItem("ludoPlayerKey", key);
+	localStorage.setItem("chatlovePlayerKey", key);
 	return key;
 };
+
+const getPlayerName = () => localStorage.getItem("chatloveName") || sessionStorage.getItem("userName") || "Stranger";
 
 const trackPosition = (player, progress) => {
 	if (progress < 0 || progress >= 52) return null;
@@ -24,6 +26,7 @@ const Games = ({ connected, standalone = false }) => {
 	const [notice, setNotice] = useState("");
 	const [rolling, setRolling] = useState(false);
 	const [playerKey] = useState(getPlayerKey);
+	const canInvite = connected === true || Boolean(sessionStorage.getItem("strangerId"));
 
 	const me = game?.players.find((player) => player.key === playerKey);
 	const opponent = game?.players.find((player) => player.key !== playerKey);
@@ -31,7 +34,7 @@ const Games = ({ connected, standalone = false }) => {
 	const canMove = (progress) => myTurn && game?.dice !== null && progress !== 58 && (progress === -1 ? game.dice === 6 : progress + game.dice <= 58);
 
 	useEffect(() => {
-		const onInvite = ({ name }) => setInvite(name || "Your stranger");
+		const onInvite = ({ name }) => setInvite({ type: "ludo", name: name || "Your stranger" });
 		const onTicTacToeInvite = ({ name }) => setInvite({ type: "ttt", name: name || "Your stranger" });
 		const onState = (nextGame) => {
 			setGame(nextGame);
@@ -67,8 +70,8 @@ const Games = ({ connected, standalone = false }) => {
 		socket.on("ttt:declined", onTicTacToeDeclined);
 		socket.on("ttt:error", onTicTacToeError);
 		socket.on("ttt:ended", onTicTacToeEnded);
-		socket.emit("ludo:resume", { playerKey, name: sessionStorage.getItem("userName") || "Stranger" });
-		socket.emit("ttt:resume", { playerKey, name: sessionStorage.getItem("userName") || "Stranger" });
+		socket.emit("ludo:resume", { playerKey, name: getPlayerName() });
+		socket.emit("ttt:resume", { playerKey, name: getPlayerName() });
 		return () => {
 			socket.off("ludo:invite", onInvite);
 			socket.off("ludo:state", onState);
@@ -136,10 +139,10 @@ const Games = ({ connected, standalone = false }) => {
 					<div className="w-full max-w-2xl rounded-3xl border border-white/10 bg-slate-900 p-6 text-white shadow-2xl">
 						<div className="flex items-start justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-300">ChatLove Arcade</p><h2 className="mt-2 text-3xl font-black">Choose your game</h2><p className="mt-2 text-slate-400">Invite your current stranger to play together.</p></div><button onClick={() => setGameMenu(false)} className="rounded-xl border border-white/10 px-3 py-2 text-slate-300">Close</button></div>
 						<div className="mt-6 grid gap-4 sm:grid-cols-2">
-							<button onClick={inviteTicTacToe} disabled={!connected} className="rounded-2xl border border-cyan-300/30 bg-cyan-400/10 p-5 text-left transition hover:bg-cyan-400/20 disabled:cursor-not-allowed disabled:opacity-50"><span className="text-4xl">XO</span><h3 className="mt-4 text-xl font-black">Tic-Tac-Toe</h3><p className="mt-1 text-sm text-slate-400">A quick three-in-a-row duel.</p></button>
-							<button onClick={invitePartner} disabled={!connected} className="rounded-2xl border border-amber-300/30 bg-amber-400/10 p-5 text-left transition hover:bg-amber-400/20 disabled:cursor-not-allowed disabled:opacity-50"><span className="text-4xl">🎲</span><h3 className="mt-4 text-xl font-black">Ludo</h3><p className="mt-1 text-sm text-slate-400">Race four tokens home on the full track.</p></button>
+							<button onClick={inviteTicTacToe} disabled={!canInvite} className="rounded-2xl border border-cyan-300/30 bg-cyan-400/10 p-5 text-left transition hover:bg-cyan-400/20 disabled:cursor-not-allowed disabled:opacity-50"><span className="text-4xl">XO</span><h3 className="mt-4 text-xl font-black">Tic-Tac-Toe</h3><p className="mt-1 text-sm text-slate-400">A quick three-in-a-row duel.</p></button>
+							<button onClick={invitePartner} disabled={!canInvite} className="rounded-2xl border border-amber-300/30 bg-amber-400/10 p-5 text-left transition hover:bg-amber-400/20 disabled:cursor-not-allowed disabled:opacity-50"><span className="text-4xl">🎲</span><h3 className="mt-4 text-xl font-black">Ludo</h3><p className="mt-1 text-sm text-slate-400">Race four tokens home on the full track.</p></button>
 						</div>
-						{!connected && <p className="mt-4 text-sm text-amber-300">Connect with a stranger in chat to start a multiplayer game.</p>}
+						{!canInvite && <p className="mt-4 text-sm text-amber-300">Connect with a stranger in chat to start a multiplayer game.</p>}
 					</div>
 				</div>
 			)}

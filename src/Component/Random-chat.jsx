@@ -5,7 +5,7 @@ import { socket } from "../Socket";
 const Randomchat = () => {
   const [showModal, setShowModal] = useState(false);
   const [connecting, setConnecting] = useState(false);
-  const [name, setName] = useState("");
+  const [name, setName] = useState(() => localStorage.getItem("chatloveName") || sessionStorage.getItem("userName") || "");
   const [gender, setGender] = useState("");
   const [isAdult, setIsAdult] = useState(false);
 
@@ -25,6 +25,7 @@ const Randomchat = () => {
 
     // Save user info in tab-scoped storage
     sessionStorage.setItem("userName", name);
+    localStorage.setItem("chatloveName", name.trim());
     sessionStorage.setItem("userGender", gender);
     sessionStorage.setItem("userIsAdult", "true");
 
@@ -47,7 +48,7 @@ const Randomchat = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
+    <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
 
       {/* Hero */}
       <div className="max-w-7xl mx-auto px-6 py-24 text-center">
