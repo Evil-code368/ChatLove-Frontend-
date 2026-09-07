@@ -25,7 +25,7 @@ const App = () => {
       <Route path='/random-chat' element={<Randomchat />} />
       <Route path='/anonymous-chat' element={<Anonymouschat />} />
       <Route path='/confessions' element={<Confessions />} />
-      <Route path='/games' element={<Games />} />
+      <Route path='/games' element={<Games standalone />} />
       <Route path='/About' element={<About />} />
       <Route path='/Report' element={<Report />} />
       <Route path='/safety' element={<Safety />} />

@@ -16,8 +16,10 @@ const trackPosition = (player, progress) => {
 
 const safeSquares = new Set([0, 8, 13, 21, 26, 34, 39, 47]);
 
-const Games = ({ connected }) => {
+const Games = ({ connected, standalone = false }) => {
 	const [game, setGame] = useState(null);
+	const [ticTacToe, setTicTacToe] = useState(null);
+	const [gameMenu, setGameMenu] = useState(standalone);
 	const [invite, setInvite] = useState(null);
 	const [notice, setNotice] = useState("");
 	const [rolling, setRolling] = useState(false);
@@ -30,6 +32,7 @@ const Games = ({ connected }) => {
 
 	useEffect(() => {
 		const onInvite = ({ name }) => setInvite(name || "Your stranger");
+		const onTicTacToeInvite = ({ name }) => setInvite({ type: "ttt", name: name || "Your stranger" });
 		const onState = (nextGame) => {
 			setGame(nextGame);
 			setInvite(null);
@@ -44,25 +47,54 @@ const Games = ({ connected }) => {
 			setGame(null);
 			setNotice(reason || "The game ended.");
 		};
+		const onTicTacToeState = (nextGame) => {
+			setTicTacToe(nextGame);
+			setInvite(null);
+		};
+		const onTicTacToeDeclined = () => setNotice("Your stranger declined Tic-Tac-Toe.");
+		const onTicTacToeError = ({ message }) => setNotice(message);
+		const onTicTacToeEnded = ({ reason }) => {
+			setTicTacToe(null);
+			setNotice(reason || "The game ended.");
+		};
 		socket.on("ludo:invite", onInvite);
 		socket.on("ludo:state", onState);
 		socket.on("ludo:declined", onDeclined);
 		socket.on("ludo:error", onError);
 		socket.on("ludo:ended", onEnded);
+		socket.on("ttt:invite", onTicTacToeInvite);
+		socket.on("ttt:state", onTicTacToeState);
+		socket.on("ttt:declined", onTicTacToeDeclined);
+		socket.on("ttt:error", onTicTacToeError);
+		socket.on("ttt:ended", onTicTacToeEnded);
 		socket.emit("ludo:resume", { playerKey, name: sessionStorage.getItem("userName") || "Stranger" });
+		socket.emit("ttt:resume", { playerKey, name: sessionStorage.getItem("userName") || "Stranger" });
 		return () => {
 			socket.off("ludo:invite", onInvite);
 			socket.off("ludo:state", onState);
 			socket.off("ludo:declined", onDeclined);
 			socket.off("ludo:error", onError);
 			socket.off("ludo:ended", onEnded);
+			socket.off("ttt:invite", onTicTacToeInvite);
+			socket.off("ttt:state", onTicTacToeState);
+			socket.off("ttt:declined", onTicTacToeDeclined);
+			socket.off("ttt:error", onTicTacToeError);
+			socket.off("ttt:ended", onTicTacToeEnded);
 		};
 	}, [playerKey]);
 
 	const invitePartner = () => {
+		setGameMenu(false);
 		setNotice("");
 		socket.emit("ludo:invite");
 		setNotice("Waiting for your stranger to accept...");
+	};
+
+	const inviteTicTacToe = () => {
+		setGameMenu(false);
+		setNotice("");
+		socket.emit("ttt:invite");
+		setNotice("Waiting for your stranger to accept Tic-Tac-Toe...");
 	};
 
 	const roll = () => {
@@ -80,25 +112,60 @@ const Games = ({ connected }) => {
 		setGame(null);
 	};
 
+	const closeTicTacToe = () => {
+		socket.emit("ttt:leave", { playerKey });
+		setTicTacToe(null);
+	};
+
+	const myTicTacToePlayer = ticTacToe?.players.find((player) => player.key === playerKey);
+	const ticTacToeOpponent = ticTacToe?.players.find((player) => player.key !== playerKey);
+	const ticTacToeWinnerName = ticTacToe?.winner === playerKey ? "You win" : `${ticTacToeOpponent?.name || "Your stranger"} wins`;
+
 	return (
 		<>
-			{!game && connected && (
-				<button onClick={invitePartner} className="rounded-xl bg-amber-400 px-4 py-2 font-bold text-slate-950 shadow-lg transition hover:bg-amber-300">
-					Play Ludo
+			{!game && !ticTacToe && (
+				<button onClick={() => setGameMenu(true)} className="rounded-xl bg-amber-400 px-4 py-2 font-bold text-slate-950 shadow-lg transition hover:bg-amber-300">
+					{standalone ? "Choose a game" : "Games"}
 				</button>
 			)}
 
 			{notice && !game && <span className="hidden text-xs text-amber-300 sm:inline">{notice}</span>}
 
-			{invite && !game && (
+			{gameMenu && !game && !ticTacToe && (
+				<div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 p-5">
+					<div className="w-full max-w-2xl rounded-3xl border border-white/10 bg-slate-900 p-6 text-white shadow-2xl">
+						<div className="flex items-start justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-300">ChatLove Arcade</p><h2 className="mt-2 text-3xl font-black">Choose your game</h2><p className="mt-2 text-slate-400">Invite your current stranger to play together.</p></div><button onClick={() => setGameMenu(false)} className="rounded-xl border border-white/10 px-3 py-2 text-slate-300">Close</button></div>
+						<div className="mt-6 grid gap-4 sm:grid-cols-2">
+							<button onClick={inviteTicTacToe} disabled={!connected} className="rounded-2xl border border-cyan-300/30 bg-cyan-400/10 p-5 text-left transition hover:bg-cyan-400/20 disabled:cursor-not-allowed disabled:opacity-50"><span className="text-4xl">XO</span><h3 className="mt-4 text-xl font-black">Tic-Tac-Toe</h3><p className="mt-1 text-sm text-slate-400">A quick three-in-a-row duel.</p></button>
+							<button onClick={invitePartner} disabled={!connected} className="rounded-2xl border border-amber-300/30 bg-amber-400/10 p-5 text-left transition hover:bg-amber-400/20 disabled:cursor-not-allowed disabled:opacity-50"><span className="text-4xl">🎲</span><h3 className="mt-4 text-xl font-black">Ludo</h3><p className="mt-1 text-sm text-slate-400">Race four tokens home on the full track.</p></button>
+						</div>
+						{!connected && <p className="mt-4 text-sm text-amber-300">Connect with a stranger in chat to start a multiplayer game.</p>}
+					</div>
+				</div>
+			)}
+
+			{invite && !game && !ticTacToe && (
 				<div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-5">
 					<div className="w-full max-w-sm rounded-3xl bg-white p-6 text-slate-900 shadow-2xl">
 						<p className="text-sm font-semibold uppercase tracking-widest text-amber-600">Game invite</p>
-						<h2 className="mt-2 text-2xl font-black">{invite} wants to play Ludo</h2>
+						<h2 className="mt-2 text-2xl font-black">{invite.name || invite} wants to play {invite.type === "ttt" ? "Tic-Tac-Toe" : "Ludo"}</h2>
 						<div className="mt-6 flex gap-3">
-							<button onClick={() => { socket.emit("ludo:respond", { accepted: false }); setInvite(null); }} className="flex-1 rounded-xl border border-slate-200 px-4 py-3 font-semibold">Decline</button>
-							<button onClick={() => socket.emit("ludo:respond", { accepted: true })} className="flex-1 rounded-xl bg-emerald-500 px-4 py-3 font-bold text-white">Accept</button>
+							<button onClick={() => { socket.emit(invite.type === "ttt" ? "ttt:respond" : "ludo:respond", { accepted: false }); setInvite(null); }} className="flex-1 rounded-xl border border-slate-200 px-4 py-3 font-semibold">Decline</button>
+							<button onClick={() => socket.emit(invite.type === "ttt" ? "ttt:respond" : "ludo:respond", { accepted: true })} className="flex-1 rounded-xl bg-emerald-500 px-4 py-3 font-bold text-white">Accept</button>
 						</div>
+					</div>
+				</div>
+			)}
+
+			{ticTacToe && (
+				<div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/95 p-4 text-white sm:p-8">
+					<div className="mx-auto max-w-lg">
+						<div className="mb-6 flex items-center justify-between"><div><p className="text-xs font-bold uppercase tracking-[0.25em] text-cyan-300">ChatLove Arcade</p><h2 className="mt-1 text-3xl font-black">Tic-Tac-Toe</h2></div><button onClick={closeTicTacToe} className="rounded-xl border border-white/20 px-3 py-2 text-sm text-slate-300 hover:bg-white/10">Exit</button></div>
+						<div className="mb-5 grid grid-cols-2 gap-3">{ticTacToe.players.map((player) => <div key={player.key} className={`rounded-2xl border p-3 ${ticTacToe.turn === player.key ? "border-cyan-300 bg-cyan-300/10" : "border-white/10 bg-white/5"}`}><div className="flex items-center justify-between"><span className="font-black text-cyan-200">{player.mark}</span><span className="text-xs text-slate-400">{player.connected ? "Online" : "Reconnecting..."}</span></div><p className="mt-1 truncate text-sm text-slate-300">{player.name}</p></div>)}</div>
+						<div className="rounded-3xl border border-cyan-300/20 bg-linear-to-br from-cyan-950 via-slate-900 to-indigo-950 p-4 shadow-2xl sm:p-7">
+							<div className="grid grid-cols-3 gap-3">{ticTacToe.board.map((mark, index) => <button key={index} onClick={() => socket.emit("ttt:move", { playerKey, index })} disabled={Boolean(mark) || ticTacToe.turn !== playerKey || ticTacToe.status !== "playing"} className="aspect-square rounded-2xl border border-white/10 bg-white/10 text-5xl font-black text-cyan-200 transition hover:bg-cyan-300/20 disabled:cursor-not-allowed disabled:opacity-80 sm:text-6xl">{mark}</button>)}</div>
+						</div>
+						<div className="mt-5 text-center"><p className="text-xl font-black">{ticTacToe.status === "finished" ? ticTacToeWinnerName : ticTacToe.status === "draw" ? "It's a draw" : ticTacToe.turn === playerKey ? "Your turn" : `${ticTacToeOpponent?.name || "Your stranger"}'s turn`}</p><p className="mt-2 text-sm text-slate-400">{myTicTacToePlayer?.mark === "X" ? "You are X" : "You are O"}</p></div>
 					</div>
 				</div>
 			)}
