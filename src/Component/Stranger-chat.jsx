@@ -60,14 +60,13 @@ const StrangerChat = () => {
             <span className="mb-6 inline-block rounded-full border border-purple-400/30 bg-purple-500/15 px-4 py-2 text-sm font-medium text-purple-200">
               🌎 Connect with  random people worldwide
             </span>
-            <link rel="canonical" href="https://www.chatlove.pro/stranger-chat"></link>
             <h1 className="mb-6 text-5xl font-black leading-tight sm:text-6xl lg:text-7xl">
-              Free Stranger Chat -- Meet
+              Free Stranger Chat - Meet
               <span className="block text-purple-300"> Random People Online Instantly</span>
             </h1>
 
             <p className="mb-8 max-w-xl text-lg leading-8 text-gray-300">
-              Start anonymous conversations, make new friends, and enjoy real-time chats in a fun and simple space.
+              ChatLove is a free stranger chat website for anonymous text conversations with people worldwide. Start chatting without signup and meet someone new in seconds.
             </p>
 
             <div className="flex flex-col gap-4 sm:flex-row">
@@ -133,6 +132,67 @@ const StrangerChat = () => {
         
   
       </section>
+
+      <main className="bg-slate-950 px-6 py-20 text-white">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-3xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-cyan-300">A simple way to connect</p>
+            <h2 className="text-3xl font-bold sm:text-4xl">What is free stranger chat?</h2>
+            <p className="mt-5 text-lg leading-8 text-gray-300">
+              Free stranger chat is an online conversation service that matches you with a new person for a spontaneous text chat. ChatLove is designed for adults and teens who want a low-pressure way to meet people, exchange ideas, or simply talk for a few minutes.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-8 lg:grid-cols-2">
+            <section className="rounded-3xl border border-white/10 bg-white/5 p-8">
+              <h2 className="text-2xl font-bold">How do I start an anonymous chat?</h2>
+              <ol className="mt-5 space-y-4 text-gray-300">
+                <li><strong className="text-white">1. Join:</strong> Select Start Chatting and enter only the details needed to begin.</li>
+                <li><strong className="text-white">2. Match:</strong> ChatLove connects you with a random person looking for a conversation.</li>
+                <li><strong className="text-white">3. Talk:</strong> Say hello, keep the conversation respectful, and leave whenever you choose.</li>
+              </ol>
+              <Link to="/random-chat" className="mt-6 inline-block font-semibold text-cyan-300 hover:text-cyan-200">Try random chat now -&gt;</Link>
+            </section>
+
+            <section className="rounded-3xl border border-white/10 bg-white/5 p-8">
+              <h2 className="text-2xl font-bold">Is anonymous chat safe?</h2>
+              <p className="mt-5 leading-7 text-gray-300">
+                Anonymous chat is safer when you protect your identity and control what you share. Do not share your address, phone number, passwords, financial details, or private photos. Block or report anyone who pressures you, sends unwanted content, or ignores your boundaries.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-4">
+                <Link to="/safety" className="font-semibold text-cyan-300 hover:text-cyan-200">Read the safety guide -&gt;</Link>
+                <Link to="/Report" className="font-semibold text-cyan-300 hover:text-cyan-200">Report a concern -&gt;</Link>
+                <a href="https://consumer.ftc.gov/articles/how-recognize-and-avoid-phishing-scams" target="_blank" rel="noreferrer" className="font-semibold text-cyan-300 hover:text-cyan-200">Online safety advice -&gt;</a>
+              </div>
+            </section>
+          </div>
+
+          <section className="mt-12 border-t border-white/10 pt-12">
+            <h2 className="text-3xl font-bold">Which ChatLove experience is right for me?</h2>
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              <Link to="/random-chat" className="rounded-2xl border border-white/10 p-6 transition hover:border-cyan-300/50">
+                <h3 className="text-xl font-semibold">Random chat</h3>
+                <p className="mt-2 text-gray-400">For quick, one-to-one conversations with a new person.</p>
+              </Link>
+              <Link to="/anonymous-chat" className="rounded-2xl border border-white/10 p-6 transition hover:border-cyan-300/50">
+                <h3 className="text-xl font-semibold">Anonymous chat</h3>
+                <p className="mt-2 text-gray-400">For people who want to talk without creating an account.</p>
+              </Link>
+              <Link to="/confessions" className="rounded-2xl border border-white/10 p-6 transition hover:border-cyan-300/50">
+                <h3 className="text-xl font-semibold">Confessions</h3>
+                <p className="mt-2 text-gray-400">For sharing thoughts and experiences with the community.</p>
+              </Link>
+            </div>
+          </section>
+
+          <section className="mt-12 max-w-3xl border-t border-white/10 pt-12">
+            <h2 className="text-3xl font-bold">Why use ChatLove?</h2>
+            <p className="mt-5 leading-7 text-gray-300">
+              ChatLove keeps the first step simple: no account is required for the basic chat experience, and you can leave a conversation when it no longer feels right. Learn more about the platform on the <Link to="/About" className="text-cyan-300 hover:text-cyan-200">About page</Link>, or find answers on the <Link to="/faq" className="text-cyan-300 hover:text-cyan-200">frequently asked questions page</Link>.
+            </p>
+          </section>
+        </div>
+      </main>
 
       {showHowItWorks && (
         <section ref={howItWorksRef} className="bg-slate-950 px-6 py-20 text-white">
