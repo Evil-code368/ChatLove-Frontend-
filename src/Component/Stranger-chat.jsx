@@ -32,8 +32,8 @@ const StrangerChat = () => {
             <a href="/confessions" className="font-medium text-gray-300 transition hover:text-white">
             Confessions
             </a>
-            <a href="/games" className="font-medium text-gray-300 transition hover:text-white">
-              Games
+            <a href="/Blog" className="font-medium text-gray-300 transition hover:text-white">
+              Blogs
             </a>
             <a href="/About" className="font-medium text-gray-300 transition hover:text-white">
               About
